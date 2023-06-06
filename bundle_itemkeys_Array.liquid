@@ -1,0 +1,31 @@
+{% assign bundleExist = false %}
+    {% assign mainBundleExist = false %}
+    {% assign bundleBuildId = blank %}
+    {% if item.properties.bundleId != blank %}
+      {% assign bundleExist = true %}
+      {% assign bundleBuildId = item.properties.bundleId %}
+    {% endif %}
+
+    {% if item.properties.bundleMainId != blank %}
+      {% assign mainBundleExist = true %}
+      {% assign bundleBuildId = item.properties.bundleMainId %}
+    {% endif %}
+
+  {% assign bundleItemKeys = blank %}
+  {% if mainBundleExist == true %}
+  {% for line_item in cart.items %}
+    {% for prop in line_item.properties %}
+      {% if prop.first == "bundleId" %}
+        {% if prop.last == bundleBuildId %}
+          {% assign bundleItemKeys = bundleItemKeys | append:line_item.key | append:',' %}
+        {% endif %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  {% endif %}
+    
+    
+  {% if bundleExist == true %} {% continue %} {% endif %}
+  
+  HTML CART
